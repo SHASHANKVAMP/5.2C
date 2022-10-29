@@ -1,0 +1,65 @@
+from tkinter import*
+import tkinter.font
+from gpiozero import LED
+import RPi.GPIO
+RPi.GPIO.setmode(RPi.GPIO.BCM)
+
+red = LED(5)
+green = LED(6)
+white = LED(13)
+
+win = Tk()
+win.title("LED Toggler")
+myFont = tkinter.font.Font(family= "hello", size = 12, weight = "bold")
+
+def ledToggle():
+    if red.is_lit:
+        red.off()
+        redled["text"]= "TURN RED LED ON"
+    else:
+        red.on()
+        white.off()
+        whiteled["text"] = "TURN WHITE LED ON"        
+        green.off()
+        greenled["text"] = "TURN GREEN LED ON"
+        redled["text"] = "TURN RED LED OFF"
+
+def ledToggle1():
+	if green.is_lit:
+		green.off()
+		greenled["text"] = "TURN GREEN LED ON"
+	else:
+		green.on()
+		white.off()
+		whiteled["text"] = "TURN WHITE LED ON"
+		red.off()
+		redled["text"]= "TURN RED LED ON"
+		greenled["text"] = "TURN GREEN LED OFF"
+
+def ledToggle2():
+	if white.is_lit:
+		white.off()
+		whiteled["text"] = "TURN WHITE LED ON"
+	else:
+		white.on()
+		green.off()
+		greenled["text"] = "TURN GREEN LED ON"
+		red.off()
+		redled["text"]= "TURN RED LED ON"
+		whiteled["text"] = "TURN WHITE LED OFF"
+
+def close():
+    RPi.GPIO.cleanup()
+    win.destroy()
+
+whiteled = Button(win, font = myFont, command = ledToggle2, text = 'TURN WHITE LED ON', bg = 'white', height = 2, width = 25)
+whiteled.grid(row = 0, column = 0)
+redled = Button(win, font = myFont, command = ledToggle, text = 'TURN RED LED ON', bg = 'red', height = 2, width = 25)
+redled.grid(row = 1, column = 0)
+greenled = Button(win, font = myFont, command = ledToggle1, text = 'TURN GREEN LED ON', bg = 'green', height = 2, width = 25)
+greenled.grid(row = 2, column = 0)
+Exitbotton = Button(win, text = 'Exit', font = myFont, command = close, bg = 'orange', height = 1, width = 15)
+Exitbotton.grid(row = 3, column = 0)
+
+win.protocol("WM_DELETE_WINDOW")
+win.mainloop()
